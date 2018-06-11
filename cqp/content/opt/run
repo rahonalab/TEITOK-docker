@@ -1,0 +1,61 @@
+#!/bin/bash
+
+#Set localtime
+unlink /etc/localtime
+ln -s /usr/share/zoneinfo/${LOCALTIME} /etc/localtime
+echo "Time set to ${LOCALTIME}"
+
+##Config: we separate db config from file config
+
+##Apache2 config
+#If we cannot find magic file, create the configuration
+if [ ! -f "/etc/apache2/CONFIGURED" ]; then
+	
+cp -rvp /etc/apache2.dist/* /etc/apache2/
+a2enmod rewrite
+touch /etc/apache2/CONFIGURED
+
+fi
+
+##DB config
+#If we cannot find our directory in mysql, connect to the DB
+if [ ! -d "/var/lib/mysql/cqpweb" ]; then
+echo "Starting DB configuration..."
+#Hash the icingaweb2 admin pass
+export CQPWEB_ADMIN_PASS_HASH=$(openssl passwd -1 "${CQPWEB_ADMIN_PASS}")
+#set $mysql alias
+mysql="mysql --connect-timeout=10 -h sql -u root -p${MYSQL_ROOT_PASSWORD}"
+
+#Wait until MariaDB container is ready
+while ! $mysql -e status &> /dev/null; do
+    sleep 1s
+    echo -n "."
+  done
+
+
+# create and grant access to DB
+$mysql <<-END
+  CREATE DATABASE IF NOT EXISTS cqpweb default charset utf8;;
+  GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON cqpweb.* TO 'cqpweb_user'@'%' IDENTIFIED BY '${CQPWEB_DB_PASSWORD}';
+END
+
+cat <<-END
+===================================================================
+CQPWeb Maria DB password was set in the secret file to ${CQPWEB_DB_PASSWORD}
+CQPWEB (/cqpweb) default credentials: ${CQPWEB_ADMIN_USER}:${CQPWEB_ADMIN_PASS}
+===================================================================
+
+END
+
+fi
+#Check for an available internet connection
+if ping -q -c 1 -W 1 8.8.8.8 >/dev/null; then
+ntpd -gq
+service ntp start
+fi
+
+chown -R www-data:www-data /var/www/
+
+/usr/bin/supervisord -c /etc/supervisor/supervisord.conf -n &
+trap "supervisorctl shutdown && wait" SIGTERM
+wait
