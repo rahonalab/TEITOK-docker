@@ -8,11 +8,10 @@ services:
    domainname: ${DOMAINNAME}
    hostname: ${FIRSTNAME}-cqp
    build: 
-      context: ./cqp
+      context: ./teitok
    ports:
        - 80:80
    volumes:
-       - ./${FIRSTNAME}-container/etc/apache2:/etc/apache2
        - ./${FIRSTNAME}-container/corpora:/var/corpora
        - ./${FIRSTNAME}-container/www:/var/www
        - ./${FIRSTNAME}-container/registry:/usr/local/share/cwb/registry
