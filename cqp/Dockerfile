@@ -1,17 +1,13 @@
 #Rahona be Labs
 # Dockerfile for a teitok cwb-based system
 #Use latest version of php-apache
-FROM debian:stretch-slim
+FROM httpd:latest
 MAINTAINER Luigi - Rahona Labs
-
-COPY data/* /tmp/
 
 #First apt-get batch
 RUN export DEBIAN_FRONTEND=noninteractive \
      && apt-get update \
      && apt-get install -y --no-install-recommends \
-	  apache2 \
-          php-common \
 	  curl \
           mysql-client \
           net-tools \
@@ -21,13 +17,11 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 	  libxml-libxml-perl \
           g++ \
           procps \
-	  php \
-          php-common \
-	  php-json \
-          php-mysql \
-          php-opcache \
-          php-readline \
-          php-xml \
+	  php5 \
+          php5-common \
+	  php5-json \
+          php5-mysql \
+          php5-readline \
           smarty3 \  
           python \
           python-dev \
@@ -43,20 +37,24 @@ ADD content/ /
 
 #Get CWB binaries
 RUN mkdir -p /tmp/cwb \
-    && tar zvx /tmp/cwb-3.0.0-linux-x86_64.tar.gz --strip-components=1 --directory=/tmp/cwb -f - cwb-3.0.0-linux-x86_64/  \
+    && wget -q --no-cookies -O - "http://sourceforge.net/projects/cwb/files/cwb/cwb-3.0.0/cwb-3.0.0-linux-x86_64.tar.gz" \
+    | tar vxz --strip-components=1 --directory=/tmp -f - cwb-3.0.0-linux-x86_64/ \
     && cd /tmp/cwb && ./install-cwb.sh
 
 #Get and compile CWB perl module
 RUN mkdir -p /tmp/perl-cwb \
-    && tar vxz /tmp/Perl-CWB-2.2.102.tar.gz --strip-components=1 --directory=/tmp/perl-cwb -f - CWB-2.2.102/ \
+    && wget -q --no-cookies -O - "https://cwb.sourceforge.net/temp/Perl-CWB-2.2.102.tar.gz" \
+    | tar vxz --strip-components=1 --directory=/tmp/perl-cwb -f - CWB-2.2.102/ \
     && cd /tmp/perl-cwb && perl Makefile.PL && make && make test && make install
 
 RUN mkdir -p /tmp/perl-cwb-cl \
-    && tar vxz /tmp/Perl-CWB-CL-2.2.102.tar.gz --strip-components=1 --directory=/tmp/perl-cwb-cl -f - CWB-CL-2.2.102/ \
+    && wget -q --no-cookies -O - "https://cwb.sourceforge.net/temp/Perl-CWB-CL-2.2.102.tar.gz" \
+    | tar vxz --strip-components=1 --directory=/tmp/perl-cwb-cl -f - CWB-CL-2.2.102/ \
     && cd /tmp/perl-cwb-cl && perl Makefile.PL && make && make test && make install
 
 RUN mkdir -p /tmp/perl-cwb-web \
-    && tar vxz /tmp/Perl-CWB-Web-2.2.102.tar.gz --strip-components=1 --directory=/tmp/perl-cwb-web -f - CWB-Web-2.2.102/ \
+    && wget -q --no-cookies -O - "https://cwb.sourceforge.net/temp/Perl-CWB-Web-2.2.102.tar.gz"  \
+    | tar vxz /tmp/Perl-CWB-Web-2.2.102.tar.gz --strip-components=1 --directory=/tmp/perl-cwb-web -f - CWB-Web-2.2.102/ \
     && cd /tmp/perl-cwb-web && perl Makefile.PL && make && make test && make install
 
 #Get and compile teitok binaries
