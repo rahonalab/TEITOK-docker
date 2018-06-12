@@ -3,7 +3,6 @@
 #Use latest version of php-apache
 FROM debian:stretch-slim
 MAINTAINER Luigi - Rahona Labs
-ADD content/ /
 #First apt-get batch
 RUN export DEBIAN_FRONTEND=noninteractive \
      && apt-get update \
@@ -16,6 +15,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
           libboost-filesystem-dev \
           php-xml
           
+ADD content/ /
 
 #Get CWB binaries
 RUN mkdir -p /tmp/cwb \
