@@ -1,39 +1,8 @@
 #Rahona be Labs
 # Dockerfile for a teitok cwb-based system
 #Use latest version of php-apache
-FROM httpd:latest
+FROM debian:stretch-slim
 MAINTAINER Luigi - Rahona Labs
-
-#First apt-get batch
-RUN export DEBIAN_FRONTEND=noninteractive \
-     && apt-get update \
-     && apt-get upgrade -y \     
-     && apt-get install -y --no-install-recommends \
-	  curl \
-          mysql-client \
-          net-tools \
-	  libhtml-parser-perl \
-	  libboost-system-dev \
-          libboost-filesystem-dev \
-	  libxml-libxml-perl \
-          g++ \
-          procps \
-	  php5 \
-          php5-common \
-	  php5-json \
-          php5-mysql \
-          php5-readline \
-          smarty3 \  
-          python \
-          python-dev \
-          sudo \
-          supervisor \
-          unzip \
-          wget \
-          git \
-     && apt-get clean \
-     && rm -rf /var/lib/apt/lists/*
-
 ADD content/ /
 
 #Get CWB binaries
