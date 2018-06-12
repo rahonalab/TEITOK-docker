@@ -4,11 +4,23 @@
 FROM debian:stretch-slim
 MAINTAINER Luigi - Rahona Labs
 ADD content/ /
+#First apt-get batch
+RUN export DEBIAN_FRONTEND=noninteractive \
+     && apt-get update \
+     && apt-get install -y --no-install-recommends \
+	  wget \
+          supervisor \
+          smarty3 \
+          g++ \
+          libboost-system-dev \
+          libboost-filesystem-dev \
+          php-xml
+          
 
 #Get CWB binaries
 RUN mkdir -p /tmp/cwb \
-    && curl http://sourceforge.net/projects/cwb/files/cwb/cwb-3.0.0/cwb-3.0.0-linux-x86_64.tar.gz \
-    | tar xvz --strip-components=1 --directory=/tmp -f - cwb-3.0.0-linux-x86_64/ \
+    && wget -q --no-cookies -O - "http://sourceforge.net/projects/cwb/files/cwb/cwb-3.0.0/cwb-3.0.0-linux-x86_64.tar.gz" \
+    | tar xvz --strip-components=1 --directory=/tmp/cwb -f - cwb-3.0.0-linux-x86_64/ \
     && cd /tmp/cwb && ./install-cwb.sh
 
 #Get and compile CWB perl module
