@@ -7,6 +7,7 @@ MAINTAINER Luigi - Rahona Labs
 #First apt-get batch
 RUN export DEBIAN_FRONTEND=noninteractive \
      && apt-get update \
+     && apt-get upgrade -y \     
      && apt-get install -y --no-install-recommends \
 	  curl \
           mysql-client \
@@ -37,8 +38,8 @@ ADD content/ /
 
 #Get CWB binaries
 RUN mkdir -p /tmp/cwb \
-    && wget -q --no-cookies -O - "http://sourceforge.net/projects/cwb/files/cwb/cwb-3.0.0/cwb-3.0.0-linux-x86_64.tar.gz" \
-    | tar vxz --strip-components=1 --directory=/tmp -f - cwb-3.0.0-linux-x86_64/ \
+    && curl http://sourceforge.net/projects/cwb/files/cwb/cwb-3.0.0/cwb-3.0.0-linux-x86_64.tar.gz \
+    | tar xvz --strip-components=1 --directory=/tmp -f - cwb-3.0.0-linux-x86_64/ \
     && cd /tmp/cwb && ./install-cwb.sh
 
 #Get and compile CWB perl module
