@@ -13,7 +13,7 @@ services:
        - 80:80
    volumes:
        - ./${FIRSTNAME}-container/corpora:/var/corpora
-       - ./${FIRSTNAME}-container/www:/var/www
+       - ./${FIRSTNAME}-container/webapp:/var/www/html
        - ./${FIRSTNAME}-container/registry:/usr/local/share/cwb/registry
    volumes_from:
        - sql
