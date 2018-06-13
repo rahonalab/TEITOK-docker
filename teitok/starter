@@ -1,0 +1,19 @@
+#!/bin/sh
+# 
+# Start apache in forground
+# 
+# inspiration from: https://github.com/docker-library/httpd/blob/master/2.4/httpd-foreground 
+set -e
+
+#Ensure that permanent volumes are correctly set
+#/var/www/html, where teitok sits
+chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html
+#registry
+if [ ! -d "/usr/local/share/cwb/registry" ]; then
+mkdir -p /usr/local/share/cwb/registry
+fi
+
+# Apache gets grumpy about PID files pre-existing
+rm -f ${APACHE_PID_FILE}
+
+exec apache2 -DFOREGROUND
