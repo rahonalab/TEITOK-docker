@@ -12,7 +12,7 @@
 ###
 FROM debian:stretch-slim AS cwb
 LABEL maintainer="egon w. stemle <egon.stemle@eurac.edu>"
-LABEL maintainer="Luigi <egon.stemle@eurac.edu>"
+LABEL maintainer="Luigi <luigi@rahona.be"
 ENV LANG C.UTF-8
 ARG CWB_REVISION=HEAD
 
@@ -126,7 +126,8 @@ RUN apt-get update \
         apache2 \
         libapache2-mod-php7.0 \
         libxml-libxml-perl \
-        php7.0-xml
+        php7.0-xml \
+	less
 # 2) some that need special treatment
 # 2.1 smarty
 RUN curl -SL https://github.com/smarty-php/smarty/archive/v${SMARTY_VERSION}.tar.gz \
