@@ -136,7 +136,8 @@ RUN ln -s -T smarty-${SMARTY_VERSION} /usr/local/share/smarty
 RUN apt-get update \
     && apt-get install \
         libboost-system-dev \
-        libboost-filesystem-dev
+        libboost-filesystem-dev \
+	libboost-regex-dev
 COPY --from=tt-cwb /usr/local/bin/tt-cwb-encode /usr/local/bin/tt-cwb-encode
 COPY --from=tt-cwb /usr/local/bin/tt-cwb-xidx /usr/local/bin/tt-cwb-xidx
 COPY --from=tt-cwb /usr/local/bin/tt-cqp /usr/local/bin/tt-cqp
