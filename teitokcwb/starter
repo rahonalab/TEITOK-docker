@@ -1,6 +1,6 @@
 #!/bin/sh
 # 
-# Start apache in forground
+# Start apache in foreground
 # 
 # inspiration from: https://github.com/docker-library/httpd/blob/master/2.4/httpd-foreground 
 set -e
@@ -12,8 +12,6 @@ chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html
 if [ ! -d "/usr/local/share/cwb/registry" ]; then
 mkdir -p /usr/local/share/cwb/registry
 fi
-chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /usr/local/share/cwb/registry
-
 
 # Apache gets grumpy about PID files pre-existing
 rm -f ${APACHE_PID_FILE}

@@ -68,18 +68,17 @@ RUN apt-get update \
         git-core \
         g++ \
         libboost-system-dev \
-        libboost-filesystem-dev
+        libboost-filesystem-dev \
+        libboost-regex-dev
 
-# Get source
-WORKDIR /usr/local/src
-ADD https://gitlab.com/api/v4/projects/maartenes%2FTT-CWB/repository/commits/ tt-cwb.commits
-RUN git clone -b ${TT_CWB_BRANCH} --depth=1 https://gitlab.com/maartenes/TT-CWB.git
-
-# Compile
-WORKDIR /usr/local/src/TT-CWB/src
-RUN g++ -o /usr/local/bin/tt-cwb-encode tt-cwb-encode.cpp pugixml.cpp -lboost_system  -lboost_filesystem
-RUN g++ -o /usr/local/bin/tt-cwb-xidx tt-cwb-xidx.cpp -lboost_system
-
+# Get source and compile
+ADD TEITOK /usr/local/src/TEITOK
+WORKDIR /usr/local/src/TEITOK/src
+#RUN g++ -o /usr/local/bin/neotagxml neotagxml.cpp pugixml.cpp -lboost_system
+#RUN g++ -o /usr/local/bin/neotagtrain neotagtrain.cpp pugixml.cpp -lboost_system
+RUN g++ -o /usr/local/bin/tt-cwb-encode tt-cwb-encode.cpp pugixml.cpp functions-boost.cpp -lboost_system -lboost_regex
+RUN g++ -o /usr/local/bin/tt-cwb-xidx tt-cwb-xidx.cpp pugixml.cpp -lboost_system
+RUN g++ -o /usr/local/bin/tt-cqp tt-cqp.cpp pugixml.cpp functions-boost.cpp -lboost_system -lboost_regex
 ###
 ##############################################################################
 
@@ -140,6 +139,11 @@ RUN apt-get update \
         libboost-filesystem-dev
 COPY --from=tt-cwb /usr/local/bin/tt-cwb-encode /usr/local/bin/tt-cwb-encode
 COPY --from=tt-cwb /usr/local/bin/tt-cwb-xidx /usr/local/bin/tt-cwb-xidx
+COPY --from=tt-cwb /usr/local/bin/tt-cqp /usr/local/bin/tt-cqp
+#3 TEITOK
+COPY --from=tt-cwb /usr/local/src/TEITOK /usr/local/src/TEITOK
+
+
 
 # Tiny helper to start apache2 in foreground
 COPY starter /usr/local/bin/
