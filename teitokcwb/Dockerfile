@@ -74,8 +74,8 @@ RUN apt-get update \
 # Get source and compile
 ADD TEITOK /usr/local/src/TEITOK
 WORKDIR /usr/local/src/TEITOK/src
-#RUN g++ -o /usr/local/bin/neotagxml neotagxml.cpp pugixml.cpp -lboost_system
-#RUN g++ -o /usr/local/bin/neotagtrain neotagtrain.cpp pugixml.cpp -lboost_system
+RUN g++ -o /usr/local/bin/neotagxml neotagxml.cpp pugixml.cpp functions-boost.cpp -lboost_system -lboost_regex
+RUN g++ -o /usr/local/bin/neotagtrain neotagtrain.cpp pugixml.cpp functions-boost.cpp -lboost_system -lboost_regex
 RUN g++ -o /usr/local/bin/tt-cwb-encode tt-cwb-encode.cpp pugixml.cpp functions-boost.cpp -lboost_system -lboost_regex
 RUN g++ -o /usr/local/bin/tt-cwb-xidx tt-cwb-xidx.cpp pugixml.cpp -lboost_system
 RUN g++ -o /usr/local/bin/tt-cqp tt-cqp.cpp pugixml.cpp functions-boost.cpp -lboost_system -lboost_regex
@@ -138,6 +138,8 @@ RUN apt-get update \
         libboost-system-dev \
         libboost-filesystem-dev \
 	libboost-regex-dev
+COPY --from=tt-cwb /usr/local/bin/neotagxml /usr/local/bin/neotagxml
+COPY --from=tt-cwb /usr/local/bin/neotagtrain /usr/local/bin/neotagtrain
 COPY --from=tt-cwb /usr/local/bin/tt-cwb-encode /usr/local/bin/tt-cwb-encode
 COPY --from=tt-cwb /usr/local/bin/tt-cwb-xidx /usr/local/bin/tt-cwb-xidx
 COPY --from=tt-cwb /usr/local/bin/tt-cqp /usr/local/bin/tt-cqp
