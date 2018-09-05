@@ -1,1 +1,1 @@
-Docker-compose container for TEITOK
+Docker-compose container for TEITOK, using a slightly modified version of TEITOK dockerfile available at https://gitlab.inf.unibz.it/commul/docker/teitok
