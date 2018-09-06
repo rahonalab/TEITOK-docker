@@ -1,4 +1,4 @@
-Docker-compose container for TEITOK, using a slightly modified version of TEITOK dockerfile by egon w. stemle of UniBozen (Sud Tirol, Europe) (https://gitlab.inf.unibz.it/commul/docker/teitok)
+Docker-compose yaml file for [TEITOK](http://teitok.org), using a slightly modified version of TEITOK dockerfile by [egon w. stemle](https://gitlab.inf.unibz.it/commul/docker/teitok) of UniBozen (Sud Tirol, Europe) 
 
 ## INSTALLATION
 1. Drop a copy of TEITOK in teitokcwb/ directory. You need access to TEITOK's private repository
