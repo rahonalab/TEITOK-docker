@@ -6,12 +6,15 @@
 set -e
 
 #Ensure that permanent volumes are correctly set
+#Keep TEITOK Scripts and Common updated by linking them to /usr/local/src/TEITOK
+if [ ! -d "/var/www/html/TEITOK" ]; then
+mkdir -p /var/www/html/TEITOK
+ln -s /usr/local/src/TEITOK/Scripts /var/www/html/TEITOK/Scripts
+ln -s /usr/local/src/TEITOK/Common /var/www/html/TEITOK/Common
+fi
+
 #/var/www/html, where teitok sits
 chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html
-#registry
-if [ ! -d "/usr/local/share/cwb/registry" ]; then
-mkdir -p /usr/local/share/cwb/registry
-fi
 
 # Apache gets grumpy about PID files pre-existing
 rm -f ${APACHE_PID_FILE}
