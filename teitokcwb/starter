@@ -11,6 +11,7 @@ if [ ! -d "/var/www/html/TEITOK" ]; then
 mkdir -p /var/www/html/TEITOK
 ln -s /usr/local/src/TEITOK/Scripts /var/www/html/TEITOK/Scripts
 ln -s /usr/local/src/TEITOK/Common /var/www/html/TEITOK/Common
+cp -rvp /usr/local/src/TEITOK/myproject /var/www/html/TEITOK/
 fi
 
 #/var/www/html, where teitok sits
