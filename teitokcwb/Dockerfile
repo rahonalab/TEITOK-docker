@@ -66,7 +66,7 @@ RUN echo 'APT { GET { Fix-Broken "true"; }; };' >> /etc/apt/apt.conf
 RUN apt-get update \
     && apt-get install \
         git-core \
-        g++ \
+        g++
 
 # Get source and compile
 ADD TEITOK /usr/local/src/TEITOK
