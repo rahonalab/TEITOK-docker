@@ -67,20 +67,16 @@ RUN apt-get update \
     && apt-get install \
         git-core \
         g++ \
-        libboost-system-dev \
-        libboost-filesystem-dev \
-        libboost-regex-dev
 
 # Get source and compile
 ADD TEITOK /usr/local/src/TEITOK
 WORKDIR /usr/local/src/TEITOK/src
-RUN g++ -o /usr/local/bin/neotagxml neotagxml.cpp pugixml.cpp functions-boost.cpp -lboost_system -lboost_regex
-RUN g++ -o /usr/local/bin/neotagtrain neotagtrain.cpp pugixml.cpp functions-boost.cpp -lboost_system -lboost_regex
-RUN g++ -o /usr/local/bin/tt-cwb-encode tt-cwb-encode.cpp pugixml.cpp functions-boost.cpp -lboost_system -lboost_regex
-RUN g++ -o /usr/local/bin/tt-cwb-xidx tt-cwb-xidx.cpp pugixml.cpp -lboost_system
-RUN g++ -o /usr/local/bin/tt-cqp tt-cqp.cpp pugixml.cpp functions-boost.cpp -lboost_system -lboost_regex
-###
-##############################################################################
+RUN g++ -std=c++11 -o /usr/local/bin/neotagxml neotagxml.cpp pugixml.cpp functions-c11.cpp
+RUN g++ -std=c++11 -o /usr/local/bin/neotagtrain neotagtrain.cpp pugixml.cpp functions-c11.cpp
+RUN g++ -std=c++11 -o /usr/local/bin/tt-cwb-encode tt-cwb-encode.cpp pugixml.cpp functions-c11.cpp
+RUN g++ -std=c++11 -o /usr/local/bin/tt-cwb-xidx tt-cwb-xidx.cpp pugixml.cpp functions-c11.cpp
+RUN g++ -std=c++11 -o /usr/local/bin/tt-cqp tt-cqp.cpp pugixml.cpp functions-c11.cpp
+
 
 ##############################################################################
 ### Install TEITOK and cwb runtime dependencies, and configure
@@ -133,11 +129,6 @@ RUN curl -SL https://github.com/smarty-php/smarty/archive/v${SMARTY_VERSION}.tar
     | tar -xzC /usr/local/share
 RUN ln -s -T smarty-${SMARTY_VERSION} /usr/local/share/smarty
 # 2.2 tt-cwb
-RUN apt-get update \
-    && apt-get install \
-        libboost-system-dev \
-        libboost-filesystem-dev \
-	libboost-regex-dev
 COPY --from=tt-cwb /usr/local/bin/neotagxml /usr/local/bin/neotagxml
 COPY --from=tt-cwb /usr/local/bin/neotagtrain /usr/local/bin/neotagtrain
 COPY --from=tt-cwb /usr/local/bin/tt-cwb-encode /usr/local/bin/tt-cwb-encode
