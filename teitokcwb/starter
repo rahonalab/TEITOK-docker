@@ -6,12 +6,17 @@
 set -e
 
 #Ensure that permanent volumes are correctly set
-#Keep TEITOK Scripts and Common updated by linking them to /usr/local/src/TEITOK
 if [ ! -d "/var/www/html/TEITOK" ]; then
 mkdir -p /var/www/html/TEITOK
-ln -s /usr/local/src/TEITOK/Scripts /var/www/html/TEITOK/Scripts
-ln -s /usr/local/src/TEITOK/Common /var/www/html/TEITOK/Common
-cp -rvp /usr/local/src/TEITOK/myproject /var/www/html/TEITOK/
+ln -s /usr/local/src/TEITOK/common /var/www/html/TEITOK/common
+cp -rvp /usr/local/src/TEITOK/check /var/www/html/TEITOK/
+cp -rvp /usr/local/src/TEITOK/projects /var/www/html/TEITOK/
+fi
+
+
+#Update apache2 configuration
+if [ -f "/conf/apache2.conf" ]; then
+cp /conf/apache2.conf /etc/apache2/
 fi
 
 #/var/www/html, where teitok sits
