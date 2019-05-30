@@ -12,7 +12,7 @@ For the alternative version with CQPweb, see rahonalab/CQPweb-docker.
 5. Using the persistent volume on your filesystem, pick one of the template in ./${FIRSTNAME}-container/webapp/TEITOK/projects and copy it in ./${FIRSTNAME}-container/webapp/TEITOK/ as your project name.
 6. Visit http://youraddress/TEITOK/yourproject
 
-##Persistent volume
+## Persistent volume
 In order to mantain your TEITOK files and Apache2 configuration through further code upgrades, two persistent volumes are provided:
 
 | Host | Container:directory | Description & Usage |
